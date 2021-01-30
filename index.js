@@ -5,21 +5,15 @@ var session = require('express-session');
 
 var app = module.exports = express();
 
-// config
-
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// middleware
-
 app.use(express.urlencoded({ extended: false }))
 app.use(session({
-  resave: false, // don't save session if unmodified
+  resave: false, 
   saveUninitialized: false, // don't create session until something stored
-  secret: 'shhhh, very secret'
+  secret: 'secret' // here's where passport goes.
 }));
-
-// Session-persisted message middleware
 
 app.use(function(req, res, next){
   var err = req.session.error;
@@ -32,14 +26,9 @@ app.use(function(req, res, next){
   next();
 });
 
-// dummy database
-
 var users = {
-  tj: { name: 'tj' }
+  tj: { name: 'v1' } // username here
 };
-
-// when you create a user, generate a salt
-// and hash the password ('foobar' is the pass here)
 
 hash({ password: 'foobar' }, function (err, pass, salt, hash) {
   if (err) throw err;
